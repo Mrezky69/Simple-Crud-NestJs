@@ -2,45 +2,46 @@ pipeline {
     agent any
 
     environment {
-        NODEJS_HOME = tool name: 'NodeAja', type: 'NodeJSInstallation'
+        NODEJS_HOME = tool name: 'NodeAja', type: 'NodeJS'
         PATH = "${NODEJS_HOME}/bin:${env.PATH}"
     }
 
     stages {
-        stage('Clone Repository') {
+        stage('Checkout Code') {
             steps {
-                git 'https://github.com/Mrezky69/Simple-Crud-NestJs.git'
+                git branch: 'master', url: 'https://github.com/Mrezky69/Simple-Crud-NestJs.git'
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                bat 'npm install'
+                sh 'npm install'
+            }
+        }
+
+        stage('Build Application') {
+            steps {
+                sh 'npm run build'
             }
         }
 
         stage('Run Tests') {
             steps {
-                bat 'npm run test'
-            }
-        }
-
-        stage('Build') {
-            steps {
-                bat 'npm run build'
+                sh 'npm run test'
             }
         }
     }
 
     post {
         always {
-            echo 'Pipeline completed.'
+            echo 'Cleaning up...'
+            cleanWs()
         }
         success {
-            echo 'Build succeeded!'
+            echo 'Pipeline executed successfully!'
         }
         failure {
-            echo 'Build failed!'
+            echo 'Pipeline failed. Please check the logs.'
         }
     }
 }
