@@ -2,14 +2,14 @@ pipeline {
     agent any
 
     environment {
-        NODEJS_HOME = tool name: 'Node 16', type: 'NodeJSInstallation'
+        NODEJS_HOME = tool name: 'NodeAja', type: 'NodeJSInstallation'
         PATH = "${NODEJS_HOME}/bin:${env.PATH}"
     }
 
     stages {
         stage('Clone Repository') {
             steps {
-                git 'https://github.com/username/my-nest-app.git'
+                git 'https://github.com/Mrezky69/Simple-Crud-NestJs.git'
             }
         }
 
