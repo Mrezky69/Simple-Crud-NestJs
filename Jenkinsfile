@@ -15,32 +15,19 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                sh 'npm install'
+                bat 'npm install'
             }
         }
 
         stage('Run Tests') {
             steps {
-                sh 'npm run test'
+                bat 'npm run test'
             }
         }
 
         stage('Build') {
             steps {
-                sh 'npm run build'
-            }
-        }
-
-        stage('Deploy') {
-            when {
-                branch 'master'  // Deploy hanya jika di branch main
-            }
-            steps {
-                sshagent(['server-credentials-id']) {
-                    sh '''
-                    ssh user@your-server.com "cd /path/to/your/nestjs-app && git pull origin main && npm install && npm run build && pm2 restart app-name"
-                    '''
-                }
+                bat 'npm run build'
             }
         }
     }
